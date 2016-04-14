@@ -1,0 +1,1 @@
+<p class="reply" hidden="hidden"><%= User.find_by_id(reply.user).name %>@<%= User.find_by_id(reply.reply_to).name %>: <%= reply.content %></p>

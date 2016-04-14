@@ -1,0 +1,4 @@
+<div class="comment">
+	<p><%= link_to comment.user.name, comment.user, style: "color:green;" %>: <%= comment.content %></p>
+	<p style="color:#996666;" class="right"><%= time_ago_in_words(comment.created_at) %> ago</p>
+</div>
