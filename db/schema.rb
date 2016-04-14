@@ -11,30 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160326062156) do
+ActiveRecord::Schema.define(version: 20160401095829) do
 
   create_table "articles", force: :cascade do |t|
-    t.integer  "author",     limit: 4
+    t.integer  "user_id",    limit: 4
     t.string   "title",      limit: 255
     t.text     "content",    limit: 65535
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
 
+  add_index "articles", ["user_id"], name: "index_articles_on_user_id", using: :btree
+
   create_table "comments", force: :cascade do |t|
-    t.integer  "user",       limit: 4
-    t.integer  "article",    limit: 4
+    t.integer  "user_id",    limit: 4
+    t.integer  "article_id", limit: 4
     t.text     "content",    limit: 65535
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end
 
   create_table "replies", force: :cascade do |t|
-    t.integer  "comment",    limit: 4
-    t.integer  "user",       limit: 4
+    t.integer  "comment_id", limit: 4
+    t.integer  "user_id",    limit: 4
     t.integer  "reply_to",   limit: 4
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.text     "content",    limit: 65535
   end
 
   create_table "users", force: :cascade do |t|

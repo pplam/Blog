@@ -6,6 +6,10 @@ class User < ActiveRecord::Base
 	attr_reader :password
 	validate :password_must_be_present
 	#validates :password_confirmation
+	
+	has_many :articles
+        has_many :comments
+	has_many :replies	
 
 	def User.authenticate(name, password)
 		if user = find_by_name(name)

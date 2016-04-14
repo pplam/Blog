@@ -1,34 +1,42 @@
-<p id="notice"><%= notice %></p>
+<%- model_class = Article -%>
+<div class="page-header">
+	<h1 class="center"><%=t @article.title %></h1>
+	<p class="center"><%= link_to @article.user.name, @article.user, style: "color:green;" %> | <%= @article.created_at.strftime("%F") %></p>
+</div>
 
-<p>
-  <strong>Author:</strong>
-  <%= User.find_by_id(@article.author).name %>
-  </p>
+<p class="center"><%=t @article.content %></p>
 
-  <p>
-  <strong>Last update:</strong>
-  <%= @article.updated_at %>
-  </p>
+<div class="right">
+<%= link_to t('.back', :default => t("helpers.links.back")),
+              articles_path, :class => 'btn btn-primary btn-xs'  %>
+<%= link_to t('.edit', :default => t("helpers.links.edit")),
+              edit_article_path(@article), :class => 'btn btn-link' if @article.user_id == session[:user_id] %>
+<%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+              article_path(@article),
+	      :method => 'delete',
+	      :style => "color:red;",
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+	      :class => 'btn btn-link' if @article.user_id == session[:user_id] %>
+</div>
 
-  <p>
-  <strong>Created at:</strong>
-  <%= @article.created_at %>
-  </p>
+<h2>Comments</h2>
+<div id="comments", style="text-align:left">
+	<%= render :partial => @article.comments.reverse %>
+</div>
 
-<p>
-  <strong>Title:</strong>
-  <%= @article.title %>
-</p>
-
-<p>
-  <strong>Content:</strong>
-  <%= @article.content %>
-</p>
-
-<% if @article.author == session[:user_id] %>
-<%= link_to 'Edit', edit_article_path(@article) %> |
-<%= link_to 'Back', articles_path %>
-<% else %>
-	<%= link_to 'Back', articles_path %>
+<div id="new-comment", class="right">
+<%= form_for [@article,@comment], :html => { :class => "form-horizontal comment" } do |f| %>
+	<div class="form-group">
+	    <div class="col-lg-10">
+	      <%= f.text_area :content, :class => 'form-control' %>
+	    </div>
+	    <%=f.error_span(:content) %>
+	  </div>
+	
+	  <div class="form-group">
+	    <div class="col-lg-offset-3 col-lg-10">
+	      <%= f.submit "Comment", :class => 'btn btn-primary' %>
+            </div>
+	</div>
 <% end %>
-
+</div>

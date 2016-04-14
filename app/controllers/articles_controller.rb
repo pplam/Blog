@@ -2,8 +2,28 @@ class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   skip_before_filter :authorize, only: [:index, :show]
 
+#  def newcomment
+#	  @comment = Comment.new(comment_params)
+#	  @comment.user = session[:user_id]
+#	  @comment.save
+#  end
+#
+#  def showcomments#(article)
+#	  if @comments = Comment.where(article: @article.id).order(:created_at)
+#	  	render partial: 'comment', collection: @comments
+#	  end
+#  end
+#  helper_method :show_comments
+#
+#  def showreplies#(comment)
+#	  if @replies = Reply.where(comment: @comment.id).order(:created_at)
+#	  	render partial: 'reply', collection: @replies
+#	  end
+#  end
+#  helper_method :show_replies
+
   def own
-	  @my_articles = Article.where(author: session[:user_id])
+	  @my_articles = User.find_by_id(session[:user_id]).articles
   end
 
   # GET /articles
@@ -18,6 +38,11 @@ class ArticlesController < ApplicationController
   # GET /articles/1
   # GET /articles/1.json
   def show
+	  @comment = Comment.new()#(comment_params)
+#	  @comment.user_id = session[:user_id]
+#	  @comment.article_id = @article.id
+#	  params[:comment][:user_id] = session[:user_id] if params[:comment]
+#	  params[:comment][:article_id] = @article.id if params[:comment]
   end
 
   # GET /articles/new
@@ -33,7 +58,7 @@ class ArticlesController < ApplicationController
   # POST /articles.json
   def create
     @article = Article.new(article_params)
-    @article.author = session[:user_id]
+    @article.user_id = session[:user_id]
 
     respond_to do |format|
       if @article.save
@@ -80,4 +105,8 @@ class ArticlesController < ApplicationController
     def article_params
       params.require(:article).permit(:title, :content)
     end
+
+#    def comment_params
+#            params.require(:comment).permit(:content, :article_id, :user_id) if params[:comment]
+#    end
 end

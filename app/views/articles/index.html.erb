@@ -1,37 +1,38 @@
-<% if @user_name %>
-	<p style="color:green;">Logged in as <%= @user_name %>, <%= link_to "Logout", logout_path, :method => :delete, :style => 'color:red;' %></p>
-<% else %>
-	<p style="color:red;">Not login, <%= link_to 'Login', login_path, :style => 'color:green;' %></p>
-<% end %>
-
-<p id="notice"><%= notice %></p>
-
-<h1>Listing Articles</h1>
-
-<table>
+<%- model_class = Article -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Author</th>
-      <th>Title</th>
-      <th>Content</th>
-      <th></th>
+      <th><%= model_class.human_attribute_name(:Title) %></th>
+      <th><%= model_class.human_attribute_name(:Author) %></th>
+      <th><%= model_class.human_attribute_name(:Created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
-    <% @articles.each do |article| %>
+	  <% @articles.each do |article| %>
+		  <% user = article.user %>
       <tr>
-        <td><%= User.find_by_id(article.author).name %></td>
-        <td><%= article.title %></td>
-        <td><%= article.content %></td>
-        <td><%= link_to 'Show', article %></td>
+	      <td><b><%= link_to article.title, article_path(article), style: "color:#800000;" %></b></td>
+	<td><%= link_to user.name, user_path(user), :style => "color:green;" %></td>
+        <td><%= article.created_at.strftime("%v") %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_article_path(article), :class => 'btn btn-default btn-xs' if user.id == session[:user_id] %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      article_path(article),
+		      :method => :delete,
+		      :style => "color:red;",
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-default' if user.id == session[:user_id] %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<% if session[:user_id] %>
-	<%= link_to 'My Articles', own_path %>
-<% end %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_article_path,
+            :class => 'btn btn-primary btn-sm' if session[:user_id] %>
