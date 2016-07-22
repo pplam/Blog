@@ -29,9 +29,9 @@
 #    masonry: columnWidth: '.grid-sizer'
 
 
-# pckry = new packery('.grid',
-#    itemSelector: '.grid-item'
-#    columnWidth: 50)
+# pckry = new Packery('.grid',
+#     itemSelector: '.grid-item'
+#     columnWidth: 50)
 # pckry.getItemElements().forEach (itemEle) ->
 #     dragie = new Draggabilly(itemEle)
 #     pckry.bindDraggabillyEvents(dragie)

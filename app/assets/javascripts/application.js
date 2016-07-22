@@ -15,3 +15,8 @@
 //= require twitter/bootstrap
 //= require turbolinks
 //= require_tree .
+//= require freewall
+//= require isotope
+//= require draggabilly
+//= require interact
+//= require packery
