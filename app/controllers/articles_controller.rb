@@ -33,6 +33,7 @@ class ArticlesController < ApplicationController
 		  @user_name = User.find_by_id(session[:user_id]).name
 	  end
     @articles = Article.order(:created_at)
+    @article = Article.new
   end
 
   # GET /articles/1

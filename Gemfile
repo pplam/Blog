@@ -58,3 +58,5 @@ gem 'less-rails'
 gem 'twitter-bootstrap-rails'
 
 gem 'summarize', '~> 1.0', '>= 1.0.3'
+
+gem 'tinymce-rails'

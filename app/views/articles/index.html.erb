@@ -1,76 +1,55 @@
 <%- model_class = Article -%>
-<div id="main-page">
+
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
-</div>
-<!-- <table class="table table&#45;striped"> -->
-<!--   <thead> -->
-<!--     <tr> -->
-      <!-- <th><%#= model_class.human_attribute_name(:Title) %></th> -->
-<!--       <th><%#= model_class.human_attribute_name(:Author) %></th> -->
-<!--       <th><%#= model_class.human_attribute_name(:Created_at) %></th> -->
-<!--       <th><%#=t '.actions', :default => t("helpers.actions") %></th> -->
-<!--     </tr> -->
-<!--   </thead> -->
-<!--   <tbody> -->
-<!-- 	  <%# @articles.each do |article| %> -->
-<!-- 		  <%# user = article.user %> -->
-<!--       <tr> -->
-<!-- 	      <td><b><%#= link_to article.title, article_path(article), style: "color:#800000;" %></b></td> -->
-<!-- 	<td><%#= link_to user.name, user_path(user), :style => "color:green;" %></td> -->
-<!--         <td><%#= article.created_at.strftime("%v") %></td> -->
-<!--         <td> -->
-          <%# <%= link_to t('.edit', :default => t("helpers.links.edit")),
-<%# # <!--                       edit_article_path(article), :class => 'btn btn&#45;default btn&#45;xs' if user.id == session[:user_id] %>
-          <%# <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
-# <!--                       article_path(article), -->
-# <!-- 		      :method => :delete, -->
-# <!-- 		      :style => "color:red;", -->
-# <!--                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, -->
-# <!--                       :class => 'btn btn&#45;xs btn&#45;default' if user.id == session[:user_id] %>
-<!--         </td> -->
-<!--       </tr> -->
-    <%# <% end %>
-<!--   </tbody> -->
-<!-- </table> -->
+    <h1 class="pull-left"><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+    <h1 class="pull-right">
+    <%= link_to "#animatedModal", id: "new_article" do %>
+      <span class="glyphicon glyphicon-plus"></span>
+    <% end if session[:user_id] %>
+    </h1>
+    <div class="clearfix"></div>
+</div> <!-- /page-header -->
 
 <div id="grid" class="grid">
-<% @articles.each do |art| %>
-<% colsize = Random.rand(6)+2 %>
+    <% @articles.each do |art| %>
+    <% colsize = Random.rand(6)+2 %>
 
-<div class="flip-container grid-item col-lg-<%= colsize %>">
-  <!-- <div class="flip&#45;container"> -->
+    <div class="flip-container grid-item col-lg-<%= colsize %>">
 
-    <div class="flipper">
+      <div class="flipper">
 
-      <div class="front darken-image">
-  <a href='<%= article_path(art) %>'>
-        <h2 class="wyellow center"><%= art.title %></h2>
-        <p class="white center"><%= art.content.summarize(:ratio => 20) %></p>
-        </a>
+        <div class="front darken-image">
+          <%= link_to art do %>
+            <h2 class="wyellow center"><%= art.title %></h2>
+            <p class="white center"><%= art.content.summarize(:ratio => 20) %></p>
+          <% end %>
         </div>
 
         <div class="back">
           <h2><%= art.user.name %></h2>
         </div>
 
-    </div><!--flipper-->
+      </div><!--flipper-->
 
-  </div><!--flip-container-->
-  <!-- </div> -->
-        <% end %>
+    </div><!--flip-container-->
+  <% end %>
 </div><!--grid-->
 
-</div><!--main-page-->
-
-<!--         <div class="row"> -->
-<%# <%= link_to t('.new', :default => t("helpers.links.new")),
-# <!--             new_article_path, -->
-# <!--             :class => 'btn btn&#45;primary btn&#45;sm' if session[:user_id] %>
-<!--           </div> -->
-
+<div id="animatedModal">
+  <div class="close-animatedModal">
+    <span class="closebt glyphicon glyphicon-remove-circle"></span>
+  </div>
+  <div class="modal-content">
+    <%= render "form" %>
+  </div>
+</div>
 
 <script>
+
+  $("#new_article").animatedModal({
+    animatedIn:'lightSpeedIn',
+    animatedOut:'bounceOutDown'
+  });
 
 // $(document).ready(function(){
 //   $.each($(".front"), function(){
